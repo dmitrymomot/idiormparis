@@ -1,5 +1,5 @@
 {
-    "name": "dmitry/idiormparis",
+    "name": "dimkof/idiormparis",
     "description": "Idiorm and Paris in one package and refactored to PSR-4",
     "keywords": ["idiorm", "paris", "orm", "active record", "model"],
     "homepage": "http://j4mie.github.com/idiormandparis",
