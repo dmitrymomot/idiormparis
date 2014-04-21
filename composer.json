@@ -1,0 +1,41 @@
+{
+    "name": "dmitry/idiormparis",
+    "description": "Idiorm and Paris in one package and refactored to PSR-4",
+    "keywords": ["idiorm", "paris", "orm", "active record", "model"],
+    "homepage": "http://j4mie.github.com/idiormandparis",
+    "license": [
+        "BSD-2-Clause",
+        "BSD-3-Clause",
+        "BSD-4-Clause"
+    ],
+    "authors": [
+        {
+            "name": "Jamie Matthews",
+            "email": "jamie.matthews@gmail.com",
+            "homepage": "http://j4mie.org",
+            "role": "Developer"
+        },
+        {
+            "name": "Simon Holywell",
+            "email": "treffynnon@php.net",
+            "homepage": "http://simonholywell.com",
+            "role": "Maintainer"
+        },
+        {
+            "name": "Durham Hale",
+            "email": "me@durhamhale.com",
+            "homepage": "http://durhamhale.com",
+            "role": "Maintainer"
+        },
+        {
+            "name": "Dmitry Momot",
+            "email": "mail@dmomot.com",
+            "homepage": "http://dmitrymomot.com",
+            "role": "Maintainer"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.0",
+    }
+}
