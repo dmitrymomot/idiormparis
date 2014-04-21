@@ -3,6 +3,7 @@
     "description": "Idiorm and Paris in one package and refactored to PSR-4",
     "keywords": ["idiorm", "paris", "orm", "active record", "model"],
     "homepage": "http://j4mie.github.com/idiormandparis",
+    "type": "library",
     "license": [
         "BSD-2-Clause",
         "BSD-3-Clause",
@@ -40,6 +41,11 @@
     "autoload": {
         "psr-4": {
             "IdiormParis\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.2.x-dev"
         }
     },
     "minimum-stability": "dev"
