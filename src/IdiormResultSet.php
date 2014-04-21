@@ -7,7 +7,7 @@
 
 namespace IdiormParis;
 
-class IdiormResultSet implements Countable, IteratorAggregate, ArrayAccess, Serializable {
+class IdiormResultSet implements \Countable, \IteratorAggregate, \ArrayAccess, \Serializable {
 
 	/**
 	 * The current result set as an array

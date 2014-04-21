@@ -12,7 +12,9 @@
 
 namespace IdiormParis;
 
-class ORM implements ArrayAccess {
+use \PDO;
+
+class ORM implements \ArrayAccess {
 
 	// ----------------------- //
 	// --- CLASS CONSTANTS --- //
@@ -156,7 +158,7 @@ class ORM implements ArrayAccess {
 	 * @param mixed $value
 	 * @param string $connection_name Which connection to use
 	 */
-	public static function configure($key, $value = null, $connection_name = static::DEFAULT_CONNECTION) {
+	public static function configure($key, $value = null, $connection_name = self::DEFAULT_CONNECTION) {
 		static::_setup_db_config($connection_name); //ensures at least default config is set
 
 		if (is_array($key)) {
@@ -181,7 +183,7 @@ class ORM implements ArrayAccess {
 	 * @param string $key
 	 * @param string $connection_name Which connection to use
 	 */
-	public static function get_config($key = null, $connection_name = static::DEFAULT_CONNECTION) {
+	public static function get_config($key = null, $connection_name = self::DEFAULT_CONNECTION) {
 		if ($key) {
 			return static::$_config[$connection_name][$key];
 		} else {
@@ -206,7 +208,7 @@ class ORM implements ArrayAccess {
 	 * @param string $connection_name Which connection to use
 	 * @return ORM
 	 */
-	public static function for_table($table_name, $connection_name = static::DEFAULT_CONNECTION) {
+	public static function for_table($table_name, $connection_name = self::DEFAULT_CONNECTION) {
 		static::_setup_db($connection_name);
 		return new self($table_name, array(), $connection_name);
 	}
@@ -215,7 +217,7 @@ class ORM implements ArrayAccess {
 	 * Set up the database connection used by the class
 	 * @param string $connection_name Which connection to use
 	 */
-	protected static function _setup_db($connection_name = static::DEFAULT_CONNECTION) {
+	protected static function _setup_db($connection_name = self::DEFAULT_CONNECTION) {
 		if (!array_key_exists($connection_name, static::$_db) ||
 			!is_object(static::$_db[$connection_name])) {
 			static::_setup_db_config($connection_name);
@@ -250,7 +252,7 @@ class ORM implements ArrayAccess {
 	 * @param PDO $db
 	 * @param string $connection_name Which connection to use
 	 */
-	public static function set_db($db, $connection_name = static::DEFAULT_CONNECTION) {
+	public static function set_db($db, $connection_name = self::DEFAULT_CONNECTION) {
 		static::_setup_db_config($connection_name);
 		static::$_db[$connection_name] = $db;
 		static::_setup_identifier_quote_character($connection_name);
@@ -339,7 +341,7 @@ class ORM implements ArrayAccess {
 	 * @param string $connection_name Which connection to use
 	 * @return PDO
 	 */
-	public static function get_db($connection_name = static::DEFAULT_CONNECTION) {
+	public static function get_db($connection_name = self::DEFAULT_CONNECTION) {
 		static::_setup_db($connection_name); // required in case this is called before Idiorm is instantiated
 		return static::$_db[$connection_name];
 	}
@@ -355,7 +357,7 @@ class ORM implements ArrayAccess {
 	 * @param string $connection_name Which connection to use
 	 * @return bool Success
 	 */
-	public static function raw_execute($query, $parameters = array(), $connection_name = static::DEFAULT_CONNECTION) {
+	public static function raw_execute($query, $parameters = array(), $connection_name = self::DEFAULT_CONNECTION) {
 		static::_setup_db($connection_name);
 		return static::_execute($query, $parameters, $connection_name);
 	}
@@ -378,7 +380,7 @@ class ORM implements ArrayAccess {
 	* @param string $connection_name Which connection to use
 	* @return bool Response of PDOStatement::execute()
 	*/
-	protected static function _execute($query, $parameters = array(), $connection_name = static::DEFAULT_CONNECTION) {
+	protected static function _execute($query, $parameters = array(), $connection_name = self::DEFAULT_CONNECTION) {
 		static::_log_query($query, $parameters, $connection_name);
 		$statement = static::$_db[$connection_name]->prepare($query);
 
@@ -468,7 +470,7 @@ class ORM implements ArrayAccess {
 	 * set to true. Otherwise, returned array will be empty.
 	 * @param string $connection_name Which connection to use
 	 */
-	public static function get_query_log($connection_name = static::DEFAULT_CONNECTION) {
+	public static function get_query_log($connection_name = self::DEFAULT_CONNECTION) {
 		if (isset(static::$_query_log[$connection_name])) {
 			return static::$_query_log[$connection_name];
 		}
@@ -491,7 +493,7 @@ class ORM implements ArrayAccess {
 	 * "Private" constructor; shouldn't be called directly.
 	 * Use the ORM::for_table factory method instead.
 	 */
-	protected function __construct($table_name, $data = array(), $connection_name = static::DEFAULT_CONNECTION) {
+	protected function __construct($table_name, $data = array(), $connection_name = self::DEFAULT_CONNECTION) {
 		$this->_table_name = $table_name;
 		$this->_data = $data;
 
@@ -969,8 +971,8 @@ class ORM implements ArrayAccess {
 			$values = array($values);
 		}
 		array_push($this->$conditions_class_property_name, array(
-			static::CONDITION_FRAGMENT => $fragment,
-			static::CONDITION_VALUES => $values,
+			self::CONDITION_FRAGMENT => $fragment,
+			self::CONDITION_VALUES => $values,
 		));
 		return $this;
 	}
@@ -1411,8 +1413,8 @@ class ORM implements ArrayAccess {
 
 		$conditions = array();
 		foreach ($this->$conditions_class_property_name as $condition) {
-			$conditions[] = $condition[static::CONDITION_FRAGMENT];
-			$this->_values = array_merge($this->_values, $condition[static::CONDITION_VALUES]);
+			$conditions[] = $condition[self::CONDITION_FRAGMENT];
+			$this->_values = array_merge($this->_values, $condition[self::CONDITION_VALUES]);
 		}
 
 		return strtoupper($type) . " " . join(" AND ", $conditions);
@@ -1519,7 +1521,7 @@ class ORM implements ArrayAccess {
 	 * Check the query cache for the given cache key. If a value
 	 * is cached for the key, return the value. Otherwise, return false.
 	 */
-	protected static function _check_query_cache($cache_key, $connection_name = static::DEFAULT_CONNECTION) {
+	protected static function _check_query_cache($cache_key, $connection_name = self::DEFAULT_CONNECTION) {
 		if (isset(static::$_query_cache[$connection_name][$cache_key])) {
 			return static::$_query_cache[$connection_name][$cache_key];
 		}
@@ -1536,7 +1538,7 @@ class ORM implements ArrayAccess {
 	/**
 	 * Add the given value to the query cache.
 	 */
-	protected static function _cache_query_result($cache_key, $value, $connection_name = static::DEFAULT_CONNECTION) {
+	protected static function _cache_query_result($cache_key, $value, $connection_name = self::DEFAULT_CONNECTION) {
 		if (!isset(static::$_query_cache[$connection_name])) {
 			static::$_query_cache[$connection_name] = array();
 		}
